@@ -15,7 +15,6 @@
   function onChange(): void {
 
     const fetchedFilename = files?.item(0)?.name
-    console.log(fetchedFilename)
     if (fetchedFilename === undefined) {
     return 
     }

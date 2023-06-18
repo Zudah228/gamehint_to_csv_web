@@ -19,7 +19,6 @@ export class GameHintCsv {
     const allRows = text.split("\n");
     const keys = this.#splitSpecificRow(allRows, 0);
     const rows = allRows.slice();
-    console.log("keys",keys)
     rows.splice(0, 1);
 
     const list: GameHintParticipant[] = [];
