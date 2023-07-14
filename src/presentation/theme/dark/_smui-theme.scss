@@ -13,7 +13,8 @@
 // Typography
 @use '@material/typography/mdc-typography';
 @use '@material/typography/mixins' as typography;
-
+@use '@material/linear-progress/mixins' as linear-progress;
+ 
 html,
 body {
   background-color: #1c1c1c;
@@ -71,4 +72,8 @@ big {
 b,
 strong {
   font-weight: bold;
+}
+
+.my-colored-linear-progress {
+  @include linear-progress.bar-color(theme.$primary);
 }

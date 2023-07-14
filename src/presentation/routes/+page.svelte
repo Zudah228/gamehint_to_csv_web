@@ -1,4 +1,8 @@
 <script lang="ts">
+	// svelte
+	import { enhance } from '$app/forms';
+
+	// smui
 	import Button from '@smui/button';
 	import Textfield from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
@@ -6,28 +10,35 @@
 	import { Icon, Label } from '@smui/common';
 	import Snackbar from '@smui/snackbar';
 	import Tooltip, { Wrapper, Title, Content, Link } from '@smui/tooltip';
+	import LinearProgress from '@smui/linear-progress';
+	// app component
 	import FileInput  from "../components/FileInput.svelte"
 
+	// app utils
 	import { GameHintCsv } from '../../domain/entities/game_hint/GameHintCsv'
-	import { getNewCreateTournament } from '../../application/CreateTournament'
 	import { FormState } from '../../utils/FormState'
-    import { AppError } from '../../domain/exception/AppError'
 
+	export let form;
+
+	// TODO: action したら、なんか bind してた値がリセットされる
 	const formStates = {
 		challongeApiKey:  new FormState(''),
 		tournamentName: new FormState(''),
 		csvFile: new FormState<FileList>(undefined)
 	}
+	let participantNames: string | undefined
+
 	let gameHintCsv: GameHintCsv | undefined;
-	let loadingMessage: string | undefined;
-	let snackbarLoading: Snackbar;
-	let resultUrl: string | undefined;
+
+	// ui
+	let errorSnackBar: Snackbar;
+	let isLoading: boolean = false
 
 	async function paste(): Promise<void> {
-		const text = await  navigator.clipboard.readText()
+		const text = await  navigator.clipboard.readText();
 
 		if (text) {
-			formStates.challongeApiKey.value = text
+			formStates.challongeApiKey.value = text;
 		}
 	}
 
@@ -40,74 +51,48 @@
 
 		formStates.tournamentName.value = file.name.split('.')[0];
 		gameHintCsv = await GameHintCsv.fromFile(file);
+		participantNames = JSON.stringify(gameHintCsv.list.map((e) => e.名前))
 	}
 
-	function validate(): boolean {
-		let isValid = true;
-		if (!formStates.csvFile.value) {
-			formStates.csvFile.error = "ファイルを選択してください";
-			isValid = false;
-		} else {
-			formStates.csvFile.error = undefined;
-		}
-
-		if (!formStates.challongeApiKey.value) {
-			formStates.challongeApiKey.error = "ChallongeAPIキーを入力してください";
-			isValid = false;
-		} else {
-			formStates.challongeApiKey.error = undefined;
-		}
-
-		if (!formStates.tournamentName.value) {
-			formStates.tournamentName.error = "トーナメントの名前";
-			isValid = false;
-		} else {
-			formStates.tournamentName.error = undefined;
-		}
-
-		return isValid;
+	async function beforeSaved() {
+		isLoading = true;
 	}
 
-	async function onSubmitted() {
-		try {
-			if (!validate()) {
-				return;
-			}
-			
-			const challongeApiKey = formStates.challongeApiKey.value!.trim();
-			const tournamentName = formStates.tournamentName.value!.trim();
-			const participantNames = gameHintCsv!.list.map((e) => e.名前)
+	async function onSaved() {
 
-			const createTournament = getNewCreateTournament(challongeApiKey)
+		// onError
+		await new Promise((r) => setTimeout(r, 100));
 
-			const url = await createTournament.call({
-				tournamentName,
-				participantNames,
-				onMessageChanged: (message) => {
-					loadingMessage = message;
-
-					snackbarLoading.open();
-				}
-			});
-
-			resultUrl = url;
-		} catch (e) {
-			if (e instanceof AppError) {
-				alert(e.message)
-			}
+		if (form?.error !== undefined) {
+			errorSnackBar.open();
 		}
-	}
 
+		isLoading = false;
+
+		// onSuccess
+	}
 </script>
 
-<Snackbar bind:this={snackbarLoading}>
-	<Label>{loadingMessage}</Label>
+<Snackbar bind:this={errorSnackBar}>
+	<Label>{form?.error}</Label>
 </Snackbar>
 
 <div class="mx-16 mt-8 space-y-12">
-	<h2 class="mdc-typography--headline2">GameHint to Challonge</h2>
+	<div class="flex space-x-6 justify-between">
+		<h2 class="mdc-typography--headline2">GameHint to Challonge</h2>
+		<a href="https://twitter.com/zudah1321" class="flex-col flex items-center">
+			<IconButton class="material-icons">message</IconButton>
+		</a>
+		
+	</div>
+	
 
-	{#if resultUrl !== undefined}
+
+	{#if isLoading}
+		<LinearProgress class="my-colored-linear-progress" indeterminate />
+	{/if}
+
+	{#if form?.url !== undefined}
 		<div class="bg-green-200 text-green-800 space-y-2 rounded-md py-4 px-6">
 			<div class="flex items-center space-x-2">
 				<Icon class="material-icons">info</Icon>
@@ -115,8 +100,8 @@
 			</div>
 			
 			<div>
-				<Link href="https://challonge.com/settings/developer">
-					<p>{resultUrl}</p>
+				<Link href="{form?.url}">
+					<p class="underline">{form?.url}</p>
 				</Link>
 			</div>
 		</div>
@@ -133,7 +118,7 @@
 		
 
 		{#if gameHintCsv}
-			<div class="py-2 px-4 flex bg-slate-900">
+			<div class="py-2 px-4 bg-slate-900 inline-flex">
 				<caption class="flex">
 						参加者：
 						{#each gameHintCsv.list as participant, i}
@@ -154,7 +139,7 @@
 		<div class="flex items-center space-x-4">
 			<h5 class="mdc-typography--headline5">Challonge API キー</h5>
 			<Wrapper rich class="flex items-center">
-				<Icon class="material-icons">help</Icon>
+				<Icon class="material-icons cursor-pointer">help</Icon>
 
 				<Tooltip interactive yPos="above" xPos="end">
 					<Title>
@@ -203,6 +188,21 @@
 		</div>
 	</div>
 	<div>
-		<Button type="submit" variant="raised" on:click={onSubmitted}>送信</Button>
+		<form method="POST" action="?/tournament" use:enhance={() => {
+			return async ({ update,  }) => {
+				beforeSaved();
+
+				await update();
+
+				onSaved();
+			}
+		}}>
+			<div class="hidden">
+				<input bind:value={formStates.challongeApiKey.value} name="challongeApiKey">
+				<input bind:value={formStates.tournamentName.value} name="tournamentName">
+				<input bind:value={participantNames} name="participantNames">
+			</div>
+			<Button type="submit" variant="raised">送信</Button>
+		</form>
 	</div>
 </div>
