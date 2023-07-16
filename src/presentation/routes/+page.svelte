@@ -1,4 +1,10 @@
+
 <script lang="ts">
+	// TODO: ローディング切り替えができない
+	// TODO: ローディング中に、進捗を表示したい
+	// TODO: 説明文の追加
+	// TODO: GitHub アイコンとリンクの表示 
+	
 	// svelte
 	import { enhance } from '$app/forms';
 
@@ -80,11 +86,14 @@
 <div class="mx-16 mt-8 space-y-12">
 	<div class="flex space-x-6 justify-between">
 		<h2 class="mdc-typography--headline2">GameHint to Challonge</h2>
+		<!-- TODO: GitHub アイコンとリンクの表示  -->
 		<a href="https://twitter.com/zudah1321" class="flex-col flex items-center">
 			<IconButton class="material-icons">message</IconButton>
 		</a>
 		
 	</div>
+
+	<p class="text-white opacity-60">GameHint の参加者 CSV ファイルから、自動で Challonge </p>
 	
 
 
