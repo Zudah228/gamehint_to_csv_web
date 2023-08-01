@@ -8,17 +8,23 @@ export const actions = {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const data = await event.request.formData();
-      const challongeApiKey: string = data.get("challongeApiKey")?.toString() ?? "";
-      const tournamentName: string = data.get("tournamentName")?.toString() ?? "";
-      const participantNamesJson = data.get("participantNames")?.toString() ?? "";
-      const participantNames = JSON.parse(participantNamesJson) as string[];
-
-      if (challongeApiKey === "" || tournamentName === "") {
-        throw new AppError({
-          name: "invalid",
-          message: "有効な値ではありません",
-          details: { challongeApiKey, tournamentName, participantNames },
-        });
+      let challongeApiKey = "";
+      let tournamentName = "";
+      let participantNames: string[] = [];
+      try {
+        const data = await event.request.formData();
+        challongeApiKey = data.get("challongeApiKey")?.toString() ?? "";
+        tournamentName = data.get("tournamentName")?.toString() ?? "";
+        const participantNamesJson = data.get("participantNames")?.toString() ?? "";
+        participantNames = JSON.parse(participantNamesJson) as string[];
+      } catch (_) {
+        if (challongeApiKey === "" || tournamentName === "") {
+          throw new AppError({
+            name: "invalid",
+            message: "有効な値ではありません",
+            details: { challongeApiKey, tournamentName, participantNames },
+          });
+        }
       }
 
       const createTournament = getNewCreateTournament(challongeApiKey);
@@ -31,7 +37,7 @@ export const actions = {
       return { url };
     } catch (e) {
       if (e instanceof AppError) {
-        return { error: `${JSON.stringify(e?.details)}` };
+        return { error: e?.message };
       } else {
         return { error: "予期せぬエラーです" };
       }

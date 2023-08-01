@@ -83,22 +83,31 @@
 	<Label>{form?.error}</Label>
 </Snackbar>
 
-<div class="mx-16 mt-8 space-y-12">
+<div class="mx-6 mt-8 space-y-12">
 	<div class="flex space-x-6 justify-between">
 		<h2 class="mdc-typography--headline2">GameHint to Challonge</h2>
 		<!-- TODO: GitHub アイコンとリンクの表示  -->
-		<a href="https://twitter.com/zudah1321" class="flex-col flex items-center">
-			<IconButton class="material-icons">message</IconButton>
-		</a>
-		
+		<div class="flex scale-120">
+			<a href="https://twitter.com/zudah1321" class="flex-col flex items-center">
+				<IconButton>{String.fromCodePoint(0x1d54f)}</IconButton>
+			</a>
+			<a href="https://github.com/Zudah228/gamehint_to_csv_web">
+				<IconButton>
+					<img src="github-mark-white.png" alt="github">
+				</IconButton>
+			</a>
+		</div>
 	</div>
 
-	<p class="text-white opacity-60">GameHint の参加者 CSV ファイルから、自動で Challonge </p>
+	<p class="text-white opacity-60">GameHint の参加者 CSV ファイルから、自動で Challonge のトーナメントに登録します。<br/>ダブルエリミネーション方式 に自動で設定されます。</p>
 	
 
 
 	{#if isLoading}
+	<div class="space-y-3">
 		<LinearProgress class="my-colored-linear-progress" indeterminate />
+		<p class="text-rose-400">割とかかります...</p>
+	</div>
 	{/if}
 
 	{#if form?.url !== undefined}
@@ -117,7 +126,7 @@
 	{/if}
 	<!-- ファイル選択 -->
 	<div class="space-y-4">
-		<h5 class="mdc-typography--headline5">GameHint の参加者 CSV</h5>
+		<h5 class="mdc-typography--headline5">1. GameHint の参加者 CSV</h5>
 		<div class="space-y-2">
 			<FileInput accept="text/csv" bind:files={formStates.csvFile.value} on:change={onFileSelected} />
 			{#if formStates.csvFile.error}
@@ -146,7 +155,7 @@
 	<!-- Challonge APIキー -->
 	<div class="space-y-2">
 		<div class="flex items-center space-x-4">
-			<h5 class="mdc-typography--headline5">Challonge API キー</h5>
+			<h5 class="mdc-typography--headline5">2. Challonge API キー</h5>
 			<Wrapper rich class="flex items-center">
 				<Icon class="material-icons cursor-pointer">help</Icon>
 
@@ -166,7 +175,7 @@
 			</Wrapper>
 		</div>
 		<div class="space-y-2">
-			<Textfield class="flex items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value} style="min-width: 400px;">
+			<Textfield class="block items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value}>
 				<div slot="trailingIcon">
 					<Wrapper rich class="z-50" >
 						<IconButton class="material-icons"  on:click={paste}>content_paste</IconButton>
@@ -184,11 +193,11 @@
 
 	<!-- トーナメントの名前 -->
 	<div class="space-y-2">
-		<h5 class="mdc-typography--headline5">トーナメントの名前</h5>
+		<h5 class="mdc-typography--headline5">3. トーナメントの名前</h5>
 		<p class="flex mdc-typography--overline">※ CSV を選択したら、自動入力されます。</p>
 
 		<div class="space-y-2">
-			<Textfield type="text" variant="filled" class="flex items-center" placeholder="自動入力されます" bind:value={formStates.tournamentName.value} style="min-width: 400px;">
+			<Textfield type="text" variant="filled" class="block items-center" placeholder="自動入力されます" bind:value={formStates.tournamentName.value} style="max-width: 840;">
 				<HelperText slot="helper">Challonge に登録されるトーナメントの名前</HelperText>
 			</Textfield>
 			{#if formStates.tournamentName.error}
@@ -198,8 +207,8 @@
 	</div>
 	<div>
 		<form method="POST" action="?/tournament" use:enhance={() => {
+			beforeSaved();
 			return async ({ update,  }) => {
-				beforeSaved();
 
 				await update();
 
