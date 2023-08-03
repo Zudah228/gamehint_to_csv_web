@@ -99,14 +99,23 @@
 		</div>
 	</div>
 
-	<p class="text-white opacity-60">GameHint の参加者 CSV ファイルから、自動で Challonge のトーナメントに登録します。<br/>ダブルエリミネーション方式 に自動で設定されます。</p>
+	<p class="text-white opacity-60">
+		<Link href="https://www.gamehint.app/" class="text-primary">
+			GameHint
+		</Link>
+		の参加者 CSV ファイルから、自動で
+		<Link href="https://challonge.com" class="text-primary">
+			Challonge
+		</Link>
+		のトーナメントに登録します。<br/>ダブルエリミネーション方式 に自動で設定されます。
+	</p>
 	
 
 
 	{#if isLoading}
 	<div class="space-y-3">
 		<LinearProgress class="my-colored-linear-progress" indeterminate />
-		<p class="text-rose-400">送信なう</p>
+		<p class="text-primary">送信なう</p>
 	</div>
 	{/if}
 
