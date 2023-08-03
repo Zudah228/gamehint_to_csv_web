@@ -102,7 +102,7 @@
 		</div>
 	</div>
 
-	<p class="text-white opacity-60">
+	<p class="opacity-60">
 		<Link href="https://www.gamehint.app/" class="text-primary">
 			GameHint
 		</Link>
