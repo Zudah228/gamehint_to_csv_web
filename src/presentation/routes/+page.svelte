@@ -93,7 +93,7 @@
 			</a>
 			<a href="https://github.com/Zudah228/gamehint_to_csv_web">
 				<IconButton>
-					<img src="github-mark-white.png" alt="github">
+					<img src="images/github-mark-white.png" alt="github">
 				</IconButton>
 			</a>
 		</div>
@@ -136,6 +136,15 @@
 	<!-- ファイル選択 -->
 	<div class="space-y-4">
 		<h5 class="mdc-typography--headline5">1. GameHint の参加者 CSV</h5>
+		<div class="ml-4 space-y-1">
+			<p class="opacity-60">GameHint の管理者ページからダウンロードした CSV を選択してください。</p>
+
+			<details>
+			<summary class="opacity-60">スクリーンショット</summary>
+			<img width="480" src="images/game-hint-csv-tutorial.png" alt="game-hint-csv-tutorial">
+			</details>
+			
+		</div>
 		<div class="space-y-2">
 			<FileInput accept="text/csv" bind:files={formStates.csvFile.value} on:change={onFileSelected} />
 			{#if formStates.csvFile.error}
