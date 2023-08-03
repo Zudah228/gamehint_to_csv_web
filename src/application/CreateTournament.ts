@@ -38,11 +38,13 @@ export class CreateTournament {
       // Challonge のトーナメントに参加者の追加
       onMessageChanged?.("作成したトーナメントに参加者を追加しています");
 
-      for await (const name of participantNames) {
-        await this.challongeTournamentRepository.addParticipant(createTournamentId, {
-          "participant[name]": name,
-        });
-      }
+      await Promise.all(
+        participantNames.map(async (name) => {
+          await this.challongeTournamentRepository.addParticipant(createTournamentId, {
+            "participant[name]": name,
+          });
+        })
+      );
 
       return "https://challonge.com/" + createResult.url;
     } catch (e) {

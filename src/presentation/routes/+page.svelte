@@ -83,7 +83,7 @@
 	<Label>{form?.error}</Label>
 </Snackbar>
 
-<div class="mx-6 mt-8 space-y-12">
+<div class="mx-6 sm:mx-16 mt-10 mb-20 space-y-12">
 	<div class="flex space-x-6 justify-between">
 		<h2 class="mdc-typography--headline2">GameHint to Challonge</h2>
 		<!-- TODO: GitHub アイコンとリンクの表示  -->
@@ -106,7 +106,7 @@
 	{#if isLoading}
 	<div class="space-y-3">
 		<LinearProgress class="my-colored-linear-progress" indeterminate />
-		<p class="text-rose-400">割とかかります...</p>
+		<p class="text-rose-400">送信なう</p>
 	</div>
 	{/if}
 
@@ -175,7 +175,7 @@
 			</Wrapper>
 		</div>
 		<div class="space-y-2">
-			<Textfield class="block items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value}>
+			<Textfield class="flex items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value}>
 				<div slot="trailingIcon">
 					<Wrapper rich class="z-50" >
 						<IconButton class="material-icons"  on:click={paste}>content_paste</IconButton>
@@ -197,7 +197,7 @@
 		<p class="flex mdc-typography--overline">※ CSV を選択したら、自動入力されます。</p>
 
 		<div class="space-y-2">
-			<Textfield type="text" variant="filled" class="block items-center" placeholder="自動入力されます" bind:value={formStates.tournamentName.value} style="max-width: 840;">
+			<Textfield type="text" variant="filled" class="flex items-center" placeholder="自動入力されます" bind:value={formStates.tournamentName.value} style="max-width: 840;">
 				<HelperText slot="helper">Challonge に登録されるトーナメントの名前</HelperText>
 			</Textfield>
 			{#if formStates.tournamentName.error}
