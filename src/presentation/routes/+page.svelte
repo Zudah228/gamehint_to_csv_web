@@ -103,14 +103,14 @@
 	</div>
 
 	<p class="opacity-60">
-		<Link href="https://www.gamehint.app/" class="text-primary">
+		<Link href="https://www.gamehint.app/">
 			GameHint
 		</Link>
 		の参加者 CSV ファイルから、自動で
-		<Link href="https://challonge.com" class="text-primary">
+		<Link href="https://challonge.com">
 			Challonge
 		</Link>
-		のトーナメントに登録します。<br/>ダブルエリミネーション方式 に自動で設定されます。
+		のトーナメントに登録します。<br/> <span class="font-bold underline">ダブルエリミネーション方式</span> に自動で設定されます。
 	</p>
 	
 
@@ -140,7 +140,7 @@
 	<div class="space-y-4">
 		<h5 class="mdc-typography--headline5">1. GameHint の参加者 CSV</h5>
 		<div class="ml-4 space-y-1">
-			<p class="opacity-60">GameHint の管理者ページからダウンロードした CSV を選択してください。</p>
+			<p class="opacity-60">GameHint のイベント管理ページからダウンロードした CSV を選択してください。</p>
 
 			<details>
 			<summary class="opacity-60">スクリーンショット</summary>
@@ -175,25 +175,13 @@
 
 	<!-- Challonge APIキー -->
 	<div class="space-y-2">
-		<div class="flex items-center space-x-4">
-			<h5 class="mdc-typography--headline5">2. Challonge API キー</h5>
-			<Wrapper rich class="flex items-center">
-				<Icon class="material-icons cursor-pointer">help</Icon>
-
-				<Tooltip interactive yPos="above" xPos="end">
-					<Title>
-						API キーとは
-					</Title>
-					<Content>
-						Challonge の開発者ページで取得できます
-						<br/>
-						<Link
-							href="https://challonge.com/settings/developer"
-							target="_blank">https://challonge.com/settings/developer</Link
-						>
-					</Content>
-				</Tooltip>
-			</Wrapper>
+		<h5 class="mdc-typography--headline5">2. Challonge API キー</h5>
+		<div class="ml-4 space-y-1">
+			<p class="opacity-60">Challonge の開発者ページ（ <span><Link
+				href="https://challonge.com/settings/developer"
+				target="_blank">https://challonge.com/settings/developer</Link
+			></span> ）で取得できます</p>
+			
 		</div>
 		<div class="space-y-2">
 			<Textfield class="flex items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value}>
