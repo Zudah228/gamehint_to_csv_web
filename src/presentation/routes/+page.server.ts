@@ -35,7 +35,7 @@ export const actions = {
       return { url };
     } catch (e) {
       if (e instanceof AppError) {
-        return { error: JSON.parse(JSON.stringify(e)) as AppError };
+        return { error: e.message };
       } else {
         return { error: "予期せぬエラーです" };
       }
