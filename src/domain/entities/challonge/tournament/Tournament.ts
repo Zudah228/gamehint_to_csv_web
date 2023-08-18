@@ -63,7 +63,7 @@ export class Tournament {
   review_before_finalizing!: boolean;
   accepting_predictions!: boolean;
   participants_locked!: boolean;
-  game_name!: boolean;
+  game_name!: string;
   participants_swappable!: boolean;
   team_convertable!: boolean;
   group_stages_were_started!: boolean;

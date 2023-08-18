@@ -111,7 +111,7 @@
 		<Link href="https://challonge.com">
 			Challonge
 		</Link>
-		のトーナメントに登録します。<br/> <span class="font-bold underline">ダブルエリミネーション方式</span> に自動で設定されます。
+		のトーナメントに登録します。<br/> <span class="font-bold underline">ダブルエリミネーション方式</span> と <span class="font-bold underline">スマブラSP</span> に自動で設定されます。
 	</p>
 	
 

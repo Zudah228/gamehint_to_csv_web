@@ -9,7 +9,7 @@ export function getNewCreateTournament(challongeApiKey: string): CreateTournamen
 }
 
 /**
- *
+ * トーナメント作成から、参加者の追加まで
  */
 export class CreateTournament {
   constructor(private readonly challongeTournamentRepository: ChallongeTournamentRepository) {}
@@ -28,6 +28,7 @@ export class CreateTournament {
       const createParam: TournamentCreateParam = {
         "tournament[tournament_type]": "double elimination",
         "tournament[name]": tournamentName,
+        "tournament[game_name]": "Super Smash Bros. Ultimate",
       };
 
       onMessageChanged?.("トーナメントを作成しています");

@@ -9,11 +9,11 @@ export class GameHintCsv {
   }
   list: GameHintParticipant[];
 
-  static fromFile = async(file: File) => {
+  static fromFile = async (file: File) => {
     const text = await file.text();
 
-    return new GameHintCsv(file, text)
-  }
+    return new GameHintCsv(file, text);
+  };
 
   #generateEntities = (text: string): GameHintParticipant[] => {
     const allRows = text.split("\n");
@@ -32,7 +32,7 @@ export class GameHintCsv {
           [key]: values[index],
         };
       });
-      list.push({...obj} as GameHintParticipant);
+      list.push({ ...obj } as GameHintParticipant);
     }
 
     return list;
@@ -51,5 +51,4 @@ export class GameHintCsv {
         })
     );
   };
-
 }

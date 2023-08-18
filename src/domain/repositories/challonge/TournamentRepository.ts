@@ -136,6 +136,7 @@ export type TournamentRetrieveParam = {
 export type TournamentCreateParam = {
   "tournament[name]": string;
   "tournament[tournament_type]": TournamentType;
+  "tournament[game_name]": string;
 };
 
 export type ParticipantCreateParam = {
