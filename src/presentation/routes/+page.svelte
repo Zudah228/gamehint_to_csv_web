@@ -96,7 +96,8 @@
 			</a>
 			<a href="https://github.com/Zudah228/gamehint_to_csv_web">
 				<IconButton>
-					<img src="images/github-mark-white.png" alt="github">
+					<img class="dark:hidden" src="images/github-mark-black.png" alt="github">
+					<img class="hidden dark:block" src="images/github-mark-white.png" alt="github">
 				</IconButton>
 			</a>
 		</div>
