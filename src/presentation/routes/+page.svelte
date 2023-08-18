@@ -185,7 +185,7 @@
 			
 		</div>
 		<div class="space-y-2">
-			<Textfield class="flex items-center" type="text" variant="filled" bind:value={formStates.challongeApiKey.value}>
+			<Textfield class="flex items-center" type="password" variant="filled" bind:value={formStates.challongeApiKey.value}>
 				<div slot="trailingIcon">
 					<Wrapper rich class="z-50" >
 						<IconButton class="material-icons"  on:click={paste}>content_paste</IconButton>
