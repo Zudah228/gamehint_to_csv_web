@@ -14,8 +14,9 @@
 	import IconButton from '@smui/icon-button';
 	import { Icon, Label } from '@smui/common';
 	import Snackbar from '@smui/snackbar';
-	import Tooltip, { Wrapper, Title, Content, Link } from '@smui/tooltip';
+	import Tooltip, { Wrapper, Link } from '@smui/tooltip';
 	import LinearProgress from '@smui/linear-progress';
+  import Checkbox from '@smui/checkbox';
 	// app component
 	import FileInput  from "../components/FileInput.svelte"
 
@@ -29,8 +30,11 @@
 	const formStates = {
 		challongeApiKey:  new FormState(''),
 		tournamentName: new FormState(''),
-		csvFile: new FormState<FileList>(undefined)
+		csvFile: new FormState<FileList>(undefined),
+		policyCheckbox: new FormState(false),
 	}
+	let disableSubmit = true
+
 	let participantNames: string | undefined
 
 	let gameHintCsv: GameHintCsv | undefined;
@@ -78,6 +82,10 @@
 		isLoading = false;
 
 		// onSuccess
+	}
+
+	$: {
+		disableSubmit = (formStates.challongeApiKey.value?.length ?? 0) < 1 || (formStates.tournamentName.value?.length ?? 0) < 1 || [0, undefined, null].includes(formStates.csvFile.value?.length) || formStates.policyCheckbox.value !== true;
 	}
 </script>
 
@@ -214,10 +222,19 @@
 			{/if}
 		</div>
 	</div>
+
+	<!-- ポリシーのチェック -->
+	<div class="space-y-2">
+		<h5 class="mdc-typography--headline5">4. 本サイト使用にあたっての注意</h5>
+		<div class="flex items-center">
+			<Checkbox bind:checked={formStates.policyCheckbox.value}></Checkbox>
+			<p>本サイトは、入力されたAPIキーを保持、不正に利用しません。</p>
+		</div>
+	</div>
 	<div>
 		<form method="POST" action="?/tournament" use:enhance={() => {
 			beforeSaved();
-			return async ({ update,  }) => {
+			return async ({ update }) => {
 
 				await update();
 
@@ -229,7 +246,7 @@
 				<input bind:value={formStates.tournamentName.value} name="tournamentName">
 				<input bind:value={participantNames} name="participantNames">
 			</div>
-			<Button type="submit" variant="raised">送信</Button>
+			<Button type="submit" variant="raised" disabled={disableSubmit}>送信</Button>
 		</form>
 	</div>
 </div>
